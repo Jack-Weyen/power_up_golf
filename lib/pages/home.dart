@@ -539,7 +539,7 @@ class PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
 
             // Power-Up Display
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
 
                 // Power-Up name
@@ -580,7 +580,7 @@ class PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
 
             // Final Scores Display
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Text(
                   'Scores:',

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/gestures.dart';
+import 'package:power_up_golf/pages/rules.dart';
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -15,11 +15,13 @@ class PowerUpGolfHomePage extends StatefulWidget {
   PowerUpGolfHomePageState createState() => PowerUpGolfHomePageState();
 }
 
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // HOME PAGE STATE //
 /////////////////////
 
 class PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
+
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   // STATE VARIABLES //
@@ -212,20 +214,10 @@ class PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
         probability: "Low"),
   };
 
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   // STATE FUNCTIONS //
   /////////////////////
-
-  // Function to launch URL
-  Future<void> _launchURL() async {
-      final Uri url = Uri.parse(
-          'https://docs.google.com/document/d/1Vx1JY4Medi2a1A26oDWUWT6xGh6jxz6UTAX4tDPjcBQ/edit#heading=h.ekelnqntm8of');
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url, mode: LaunchMode.externalApplication);
-      } else {
-        throw 'Could not launch $url';
-      }
-    }
 
   // Function to update the selected player dropdown
   void _updateSelectedPlayer() {
@@ -347,6 +339,7 @@ class PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
     });
   }
 
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   // DISPOSAL //
   //////////////
@@ -364,6 +357,7 @@ class PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
     super.dispose();
   }
 
+
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
   // HOME PAGE LAYOUT //
   //////////////////////
@@ -376,6 +370,7 @@ class PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
 
     // Scaffold
     return Scaffold(
+
 
       ////////////////////////////////////////////////////////////////////////////////////////////////////
       // APP BAR //
@@ -401,6 +396,7 @@ class PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
         child: Column(
           children: [
 
+
             //////////////////////////////////////////////////////////////////////////////////////////////
             // RULES SECTION //
             ///////////////////
@@ -413,7 +409,13 @@ class PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
                   style: const TextStyle(
                       color: Colors.blue,
                       decoration: TextDecoration.underline),
-                  recognizer: TapGestureRecognizer()..onTap = _launchURL,
+                  recognizer: TapGestureRecognizer()..onTap = () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RulesPage()),
+                    );
+                  },
                 ),
               ),
 
@@ -561,6 +563,7 @@ class PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
 
             // Spacer
             const SizedBox(height: 20),
+
 
             //////////////////////////////////////////////////////////////////////////////////////////////
             // SCORES SECTION //

@@ -2,12 +2,15 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/gestures.dart';
 
 void main() {
-  runApp(PowerUpGolfApp());
+  runApp(const PowerUpGolfApp());
 }
 
 class PowerUpGolfApp extends StatelessWidget {
+  const PowerUpGolfApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,17 +18,19 @@ class PowerUpGolfApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: PowerUpGolfHomePage(),
+      home: const PowerUpGolfHomePage(),
     );
   }
 }
 
 class PowerUpGolfHomePage extends StatefulWidget {
+  const PowerUpGolfHomePage({super.key});
+
   @override
-  _PowerUpGolfHomePageState createState() => _PowerUpGolfHomePageState();
+  PowerUpGolfHomePageState createState() => PowerUpGolfHomePageState();
 }
 
-class _PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
+class PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
   // Initialize a list of players with empty names and zero scores
   List<PlayerScore> players = List.generate(
     4,
@@ -207,14 +212,14 @@ class _PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
 
   // Function to launch URL
   Future<void> _launchURL() async {
-    const url =
-        'https://docs.google.com/document/d/1Vx1JY4Medi2a1A26oDWUWT6xGh6jxz6UTAX4tDPjcBQ/edit#heading=h.ekelnqntm8of';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
+      final Uri url = Uri.parse(
+          'https://docs.google.com/document/d/1Vx1JY4Medi2a1A26oDWUWT6xGh6jxz6UTAX4tDPjcBQ/edit#heading=h.ekelnqntm8of');
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+      } else {
+        throw 'Could not launch $url';
+      }
     }
-  }
 
   // Function to update the selected player dropdown
   void _updateSelectedPlayer() {
@@ -354,10 +359,10 @@ class _PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Power-Up Golf'),
+        title: const Text('Power-Up Golf'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             // Markdown-like rules link
@@ -366,11 +371,11 @@ class _PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
                 children: [
                   TextSpan(
                     text: '# Power-Up Golf\n\n',
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   TextSpan(
                     text: 'Rules and Power-Up Descriptions',
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.blue,
                         decoration: TextDecoration.underline),
                     recognizer: TapGestureRecognizer()..onTap = _launchURL,
@@ -378,13 +383,13 @@ class _PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Score Card Table
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
                 columns: [
-                  DataColumn(label: Text('Player')),
+                  const DataColumn(label: Text('Player')),
                   for (int i = 1; i <= 9; i++)
                     DataColumn(label: Text('Hole $i')),
                 ],
@@ -395,7 +400,7 @@ class _PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
                           DataCell(
                             TextField(
                               controller: player.nameController,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Player Name',
                               ),
@@ -409,7 +414,7 @@ class _PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
                               TextField(
                                 controller: player.holeScores[i],
                                 keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   hintText: '0',
                                 ),
@@ -424,14 +429,14 @@ class _PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
                     .toList(),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Dropdown and Buttons
             Row(
               children: [
                 Expanded(
                   child: DropdownButton<PlayerScore>(
                     isExpanded: true,
-                    hint: Text('Select Player'),
+                    hint: const Text('Select Player'),
                     value: selectedPlayer,
                     items: players
                         .where((p) => p.nameController.text.trim().isNotEmpty)
@@ -450,43 +455,43 @@ class _PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
                     },
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: _getPowerUp,
-                  child: Text('Get Power-Up'),
+                  child: const Text('Get Power-Up'),
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             // Power-Up Display
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Power-Up:',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(powerUp),
-                SizedBox(height: 10),
-                Text(
+                const SizedBox(height: 10),
+                const Text(
                   'Power-Up Description:',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(powerUpDescription),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Get Scores Button
             ElevatedButton(
               onPressed: _getScores,
-              child: Text('Get Scores'),
+              child: const Text('Get Scores'),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             // Final Scores Display
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Scores:',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),

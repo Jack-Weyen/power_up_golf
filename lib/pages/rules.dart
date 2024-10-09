@@ -75,8 +75,12 @@ class RulesPage extends StatelessWidget {
                 '• All score multipliers stack\n'
                 '• Winner is the player with the lowest score\n'),
 
-            // Spacer
-            const SizedBox(height: 24.0),
+            // Spacers and Divider
+            const SizedBox(height: 8.0),
+            const Divider(
+              color: Colors.black
+            ),
+            const SizedBox(height: 16.0),
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,11 +96,11 @@ class RulesPage extends StatelessWidget {
                   ?.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
-),
+                  ),
             ),
 
             // Spacer
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 24.0),
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,16 +108,28 @@ class RulesPage extends StatelessWidget {
             /////////////////////////////////
 
             // Subsection Title
-            Text(
-              'Leader Power-Ups',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(fontWeight: FontWeight.bold),
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.lightGreen,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+              child: Text(
+                'Leader Power-Ups',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white
+                      ),
+              ),
             ),
 
             // Spacer
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 16.0),
 
             // Leader Power-Ups
             ..._buildPowerUps(
@@ -208,16 +224,28 @@ class RulesPage extends StatelessWidget {
             /////////////////////////////////
 
             // Subsection Title
-            Text(
-              'Middle Power-Ups',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(fontWeight: FontWeight.bold),
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.lightGreen,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+              child: Text(
+                'Middle Power-Ups',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white
+                    ),
+              ),
             ),
 
             // Spacer
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 16.0),
 
             // Middle Power-Ups
             ..._buildPowerUps(
@@ -334,16 +362,28 @@ class RulesPage extends StatelessWidget {
             /////////////////////////////////////
 
             // Subsection Title
-            Text(
-              'Last Place Power-Ups',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(fontWeight: FontWeight.bold),
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.lightGreen,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+              child: Text(
+                'Last Place Power-Ups',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white
+                    ),
+              ),
             ),
 
             // Spacer
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 16.0),
 
             // Last Place Power-Ups
             ..._buildPowerUps(
@@ -440,8 +480,12 @@ class RulesPage extends StatelessWidget {
               ],
             ),
 
-            // Spacer
-            const SizedBox(height: 24.0),
+            // Spacers and Divider
+            const SizedBox(height: 8.0),
+            const Divider(
+              color: Colors.black
+            ),
+            const SizedBox(height: 16.0),
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////

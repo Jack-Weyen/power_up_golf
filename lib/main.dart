@@ -50,4 +50,10 @@ class PowerUpGolfApp extends StatelessWidget {
 //    User ID, username, email (encrypted), password (encrypted)
 //
 // Test out all lambda functions
+//
+// Change functions so that only the username of other players is accessible
+// on the front end; since player_id is basically the key to everything, this means
+// that if it is accessible on the front end, it can be used to change another
+// user's information. So, in the backend, ensure that all player_id's are
+// replaced with usernames before being sent back to the frontend.
 

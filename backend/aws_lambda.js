@@ -1,6 +1,12 @@
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// CONNECTION //
+////////////////
+
+// Connection configuration
 const connectionConfig = {
     host: 'your-db-host',
     user: 'your-db-user',
@@ -8,17 +14,28 @@ const connectionConfig = {
     database: 'your-db-name',
 };
 
+// Get connetion to MySQL database
 const getConnection = async () => {
     return await mysql.createConnection(connectionConfig);
 };
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// MAIN //
+//////////
 
 exports.handler = async (event) => {
     const { action, data } = event;
     
     try {
+
+        // Get connetion to MySQL database
         const connection = await getConnection();
         
+        // Action switch
         switch(action) {
+
+            // Available actions
             case 'addPlayer':
                 return await addPlayer(connection, data.username, data.password);
             case 'getPlayerId':
@@ -41,17 +58,28 @@ exports.handler = async (event) => {
                 return await endGame(connection, data.creatorId, data.gameId);
             case 'deleteOldGames':
                 return await deleteOldGames(connection);
+
+            // Invalid action
             default:
                 throw new Error('Invalid action');
         }
+    
+    // Error handling
     } catch (error) {
         return { statusCode: 500, body: error.message };
+
+    // End connection
     } finally {
         connection && connection.end();
     }
 };
 
-// 1. Add a new player
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// FUNCTIONS //
+///////////////
+
+// Add a new player
 async function addPlayer(connection, username, password) {
     const [existing] = await connection.query('SELECT * FROM players WHERE username = ?', [username]);
     if (existing.length > 0) {
@@ -63,7 +91,7 @@ async function addPlayer(connection, username, password) {
     return { statusCode: 200, body: 'Player added successfully' };
 }
 
-// 2. Return player_id given username and password
+// Return player_id given username and password
 async function getPlayerId(connection, username, password) {
     const [rows] = await connection.query('SELECT * FROM players WHERE username = ?', [username]);
     if (rows.length === 0 || !(await bcrypt.compare(password, rows[0].password))) {
@@ -72,7 +100,7 @@ async function getPlayerId(connection, username, password) {
     return { statusCode: 200, body: { playerId: rows[0].player_id } };
 }
 
-// 3. Add a new game
+// Add a new game
 async function addGame(connection, creatorId, length) {
     if (![9, 18].includes(length)) {
         throw new Error('Game length must be 9 or 18');
@@ -103,7 +131,7 @@ function generateRandomCode() {
     return code;
 }
 
-// 4. Add a new player to a game
+// Add a new player to a game
 async function addPlayerToGame(connection, gameId, playerId, code) {
     const [game] = await connection.query('SELECT * FROM games WHERE game_id = ? AND status = "pending" AND code = ?', [gameId, code]);
     if (game.length === 0) {
@@ -119,7 +147,7 @@ async function addPlayerToGame(connection, gameId, playerId, code) {
     return { statusCode: 200, body: 'Player added to game' };
 }
 
-// 5. Begin a game
+// Begin a game
 async function beginGame(connection, creatorId, gameId) {
     const [game] = await connection.query('SELECT * FROM games WHERE game_id = ? AND creator = ? AND status = "pending"', [gameId, creatorId]);
     if (game.length === 0) {
@@ -130,7 +158,7 @@ async function beginGame(connection, creatorId, gameId) {
     return { statusCode: 200, body: 'Game started' };
 }
 
-// 6. Cancel a game
+// Cancel a game
 async function cancelGame(connection, creatorId, gameId) {
     const [game] = await connection.query('SELECT * FROM games WHERE game_id = ? AND creator = ? AND status IN ("pending", "active")', [gameId, creatorId]);
     if (game.length === 0) {
@@ -143,7 +171,7 @@ async function cancelGame(connection, creatorId, gameId) {
     return { statusCode: 200, body: 'Game canceled' };
 }
 
-// 7. Update score for each hole
+// Update score for each hole
 async function updateScore(connection, playerId, gameId, holeNumber, score, powerUp) {
     const [game] = await connection.query('SELECT * FROM games WHERE game_id = ? AND status = "active"', [gameId]);
     if (game.length === 0) {
@@ -160,7 +188,7 @@ async function updateScore(connection, playerId, gameId, holeNumber, score, powe
     return { statusCode: 200, body: 'Score updated' };
 }
 
-// 8. Return all info for a game
+// Return all info for a game
 async function getGameInfo(connection, playerId, gameId) {
     const [game] = await connection.query('SELECT * FROM games WHERE game_id = ? AND status IN ("active", "finished")', [gameId]);
     if (game.length === 0) {
@@ -172,13 +200,13 @@ async function getGameInfo(connection, playerId, gameId) {
     return { statusCode: 200, body: { game: game[0], players, holes } };
 }
 
-// 9. Return all active or finished games for a player
+// Return all active or finished games for a player
 async function getActiveGames(connection, playerId) {
     const [games] = await connection.query('SELECT * FROM games WHERE game_id IN (SELECT game_id FROM players_in_game WHERE player_id = ?) AND status IN ("active", "finished")', [playerId]);
     return { statusCode: 200, body: games };
 }
 
-// 10. End the game
+// End the game
 async function endGame(connection, creatorId, gameId) {
     const [game] = await connection.query('SELECT * FROM games WHERE game_id = ? AND creator = ? AND status = "active"', [gameId, creatorId]);
     if (game.length === 0) {
@@ -189,7 +217,7 @@ async function endGame(connection, creatorId, gameId) {
     return { statusCode: 200, body: 'Game ended' };
 }
 
-// 11. Delete old games
+// Delete old games
 async function deleteOldGames(connection) {
     const [oldGames] = await connection.query('SELECT * FROM games WHERE status IN ("pending", "active") AND TIMESTAMPDIFF(HOUR, date, NOW()) > 24');
     for (const game of oldGames) {

@@ -32,7 +32,7 @@ class PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
     4,
     (index) => PlayerScore(
       nameController: TextEditingController(),
-      holeScores: List.generate(9, (i) => TextEditingController(text: '0')),
+      holeScores: List.generate(18, (i) => TextEditingController(text: '0')),
     ),
   );
 
@@ -439,7 +439,7 @@ class PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
                   const DataColumn(label: Text('Player')),
 
                   // Then one for each hole
-                  for (int i = 1; i <= 9; i++)
+                  for (int i = 1; i <= 18; i++)
                     DataColumn(label: Text('Hole $i')),
                 ],
 
@@ -466,7 +466,7 @@ class PowerUpGolfHomePageState extends State<PowerUpGolfHomePage> {
                         ),
 
                         // Hole score cells
-                        for (int i = 0; i < 9; i++)
+                        for (int i = 0; i < 18; i++)
                           DataCell(
                             TextField(
                               controller: player.holeScores[i],
